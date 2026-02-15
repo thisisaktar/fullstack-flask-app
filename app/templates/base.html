@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title if title else "GuideMe App" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- NAVBAR (GuideMe Style) -->
+<nav class="navbar">
+    <div class="logo">GuideMe</div>
+
+    <div>
+        {% if session.get('user_id') %}
+            <a href="/dashboard" class="nav-btn">Dashboard</a>
+            <a href="/slots" class="nav-btn">Slots</a>
+            <a href="/my-bookings" class="nav-btn">Bookings</a>
+            {% if session.get('is_admin') %}
+                <a href="/admin" class="nav-btn">Admin</a>
+            {% endif %}
+            <a href="/logout" class="nav-btn">Logout</a>
+        {% else %}
+            <a href="/login" class="nav-btn">Login</a>
+            <a href="/signup" class="nav-btn">Signup</a>
+        {% endif %}
+        {% if session.get('is_admin') %}
+            <a href="/admin/bookings" class="nav-btn">Bookings (Admin)</a>
+        {% endif %}
+
+
+    </div>
+</nav>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p class="{{ category }}">{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

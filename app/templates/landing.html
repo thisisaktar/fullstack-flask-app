@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="hero">
+    <h1>Book Slots Easily & Manage Everything in One Place</h1>
+    <p>A simple, secure booking system built with Flask.</p>
+
+    {% if not session.get('user_id') %}
+        <a href="/signup" class="cta-btn">Get Started</a>
+        <a href="/login" class="cta-btn" style="margin-left:10px;">Login</a>
+    {% endif %}
+</header>
+
+<section class="services">
+    <h2>Features</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Secure Login</h3>
+            <p>Session-based authentication with CSRF protection.</p>
+        </div>
+
+        <div class="card">
+            <h3>Slot Booking</h3>
+            <p>Book available slots instantly with safe database logic.</p>
+        </div>
+
+        <div class="card">
+            <h3>Admin Control</h3>
+            <p>Manage slots and monitor bookings securely.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Bookings</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #2563eb;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    .top-links a {
+      margin-right: 10px;
+      text-decoration: none;
+      color: #2563eb;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>All Bookings</h2>
+
+  <div class="top-links">
+    <a href="/admin">Admin Panel</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">Logout</a>
+  </div>
+
+  <table>
+    <tr>
+      <th>User Name</th>
+      <th>Email</th>
+      <th>Slot Time</th>
+    </tr>
+
+    {% for booking in bookings %}
+      <tr>
+        <td>{{ booking.name }}</td>
+        <td>{{ booking.email }}</td>
+        <td>{{ booking.slot_time }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+</body>
+</html>

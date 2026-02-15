@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="services">
+    <h2>My Bookings</h2>
+
+    <div class="cards">
+        {% for booking in bookings %}
+        <div class="card">
+            <h3>{{ booking.slot_time }}</h3>
+
+            <form method="POST" action="/cancel">
+                <input type="hidden" name="slot_id" value="{{ booking.slot_id }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="nav-btn" style="background:red;">Cancel</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

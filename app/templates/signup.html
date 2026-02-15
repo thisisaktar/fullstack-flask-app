@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="services">
+    <h2>Signup</h2>
+
+    <div class="card">
+        <form id="signupForm">
+            <input type="text" id="name" placeholder="Full Name" required><br><br>
+            <input type="email" id="email" placeholder="Email" required><br><br>
+            <input type="password" id="password" placeholder="Password" required><br><br>
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='signup.js') }}"></script>
+
+{% endblock %}

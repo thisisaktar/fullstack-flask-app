@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add User</title>
+</head>
+<body>
+`
+<h2>Add User</h2>
+
+<form id="userForm">
+    <input type="text" id="name" placeholder="Enter name" required>
+    <br><br>
+    <input type="email" id="email" placeholder="Enter email" required>
+    <br><br>
+    <button type="submit">Add User</button>
+</form>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul>
+      {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+<script src="script.js"></script>
+</body>
+</html>

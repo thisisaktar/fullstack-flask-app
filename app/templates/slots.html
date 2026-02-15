@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="services">
+    <h2>Available Slots</h2>
+
+    <div class="cards">
+        {% for slot in slots %}
+        <div class="card">
+            <h3>{{ slot.slot_time }}</h3>
+            <a href="/book/{{ slot.id }}" class="cta-btn">Book Now</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

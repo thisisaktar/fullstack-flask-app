@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="services">
+    <h2>Admin Panel</h2>
+
+    <!-- Add Slot -->
+     <div class="cards" style="margin-bottom: 30px;">
+
+    <div class="card">
+        <h3>Total Users</h3>
+        <p style="font-size:24px;">{{ total_users }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Slots</h3>
+        <p style="font-size:24px;">{{ total_slots }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Bookings</h3>
+        <p style="font-size:24px;">{{ total_bookings }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Available Slots</h3>
+        <p style="font-size:24px;">{{ available_slots }}</p>
+    </div>
+
+</div>
+
+    <div class="card">
+        <h3>Add Slot</h3>
+
+        <form method="POST" action="/admin/add-slot">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="slot_time" placeholder="e.g. 10:00 - 10:30" required>
+            <button type="submit">Add Slot</button>
+        </form>
+    </div>
+
+    <!-- Slots List -->
+    <div class="cards">
+        {% for slot in slots %}
+        <div class="card">
+            <h3>{{ slot.slot_time }}</h3>
+
+            {% if slot.is_booked %}
+                <p style="color:red;">Booked</p>
+            {% else %}
+                <p style="color:green;">Available</p>
+            {% endif %}
+
+            <form method="POST" action="/admin/delete-slot">
+                <input type="hidden" name="slot_id" value="{{ slot.id }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="nav-btn" style="background:red;">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+
+{% endblock %}

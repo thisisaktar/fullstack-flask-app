@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="hero">
+    <h1>Welcome, {{ user.name }}</h1>
+    <p>Your booking dashboard</p>
+    <a href="/slots" class="cta-btn">Book a Slot</a>
+</header>
+
+{% endblock %}
