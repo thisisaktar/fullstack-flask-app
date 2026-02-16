@@ -1,7 +1,5 @@
 from flask import Blueprint, render_template, request, session, redirect
-
-
-
+from psycopg2.extras import RealDictCursor
 from .utils import get_db_connection
 from .utils import login_required, admin_required
 
@@ -14,7 +12,8 @@ admin_bp = Blueprint("admin", __name__)
 def admin_dashboard():
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     # Total Users
     cursor.execute("SELECT COUNT(*) AS total_users FROM users")
@@ -109,7 +108,8 @@ def delete_slot():
 def admin_bookings():
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     cursor.execute("""
         SELECT 

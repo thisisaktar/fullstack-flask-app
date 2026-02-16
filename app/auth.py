@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import random
-
+from psycopg2.extras import RealDictCursor
 from . import app   # to access app if needed
 from .utils import send_otp_email
 from .utils import get_db_connection
@@ -28,7 +28,8 @@ def login():
     password = data.get('password')
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
     user = cursor.fetchone()
@@ -80,7 +81,8 @@ def signup():
     hashed_password = generate_password_hash(password)
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     cursor.execute("SELECT id FROM users WHERE email=%s", (email,))
     existing_user = cursor.fetchone()

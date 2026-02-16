@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, session, redirect, flash
 from .utils import get_db_connection, login_required
+from psycopg2.extras import RealDictCursor
+
 
 
 user_bp = Blueprint("user", __name__)
@@ -146,7 +148,8 @@ def my_bookings():
     user_id = session['user_id']
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     cursor.execute("""
         SELECT slots.id AS slot_id, slots.slot_time
