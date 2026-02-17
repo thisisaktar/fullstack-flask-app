@@ -15,7 +15,9 @@ def dashboard():
     user_id = session['user_id']
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    from psycopg2.extras import RealDictCursor
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     cursor.execute(
         "SELECT name, email FROM users WHERE id = %s",
@@ -40,7 +42,8 @@ def get_slots():
         return redirect('/')
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     cursor.execute(
         "SELECT * FROM slots WHERE is_booked = FALSE"
@@ -65,7 +68,8 @@ def book_slot(slot_id):
     user_id = session['user_id']
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
 
     # ✅ Atomic update: book only if free
     cursor.execute("""
