@@ -1,6 +1,5 @@
 import smtplib
 from email.mime.text import MIMEText
-import mysql.connector
 from functools import wraps
 from flask import session, redirect
 import os
@@ -8,39 +7,32 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 
+def send_otp_email(receiver_email, otp):
+    sender_email = os.getenv("MAIL_USER")
+    sender_password = os.getenv("MAIL_PASS")
 
+    subject = "Your OTP Verification Code"
+    body = f"Your OTP code is: {otp}\n\nIt expires in 5 minutes."
 
-def send_otp_email(email, otp):
-    print(f"OTP for {email} is {otp}")
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
 
-
-# def send_otp_email(receiver_email, otp):
-
-#     sender_email = os.getenv("MAIL_USER")
-#     sender_password = os.getenv("MAIL_PASS")
-
-#     subject = "Your OTP Verification Code"
-#     body = f"Your OTP code is: {otp}\n\nIt expires in 5 minutes."
-
-#     msg = MIMEText(body)
-#     msg['Subject'] = subject
-#     msg['From'] = sender_email
-#     msg['To'] = receiver_email
-
-#     server = smtplib.SMTP("smtp.gmail.com", 587)
-#     server.starttls()
-#     server.login(sender_email, sender_password)
-#     server.send_message(msg)
-#     server.quit()
-
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.send_message(msg)
+        server.quit()
+        print(f"OTP sent to {receiver_email}")
+    except Exception as e:
+        print(f"Failed to send OTP email: {e}")
 
 
 def get_db_connection():
-    return psycopg2.connect(
-        os.getenv("DATABASE_URL"),
-        cursor_factory=RealDictCursor
-    )
-
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+    return conn
 
 
 def login_required(f):
@@ -52,7 +44,6 @@ def login_required(f):
     return decorated_function
 
 
-
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -60,5 +51,3 @@ def admin_required(f):
             return "Access denied", 403
         return f(*args, **kwargs)
     return decorated_function
-
-
