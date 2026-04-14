@@ -1,34 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ title if title else "GuideMe App" }}</title>
+    <title>{{ title if title else "GuideMe" }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-<!-- NAVBAR (GuideMe Style) -->
 <nav class="navbar">
-    <div class="logo">GuideMe</div>
+    <div class="logo">Guide<span style="color:white;">Me</span></div>
 
     <div>
         {% if session.get('user_id') %}
             <a href="/dashboard" class="nav-btn">Dashboard</a>
             <a href="/slots" class="nav-btn">Slots</a>
-            <a href="/my-bookings" class="nav-btn">Bookings</a>
+            <a href="/my-bookings" class="nav-btn">My Bookings</a>
             {% if session.get('is_admin') %}
                 <a href="/admin" class="nav-btn">Admin</a>
+                <a href="/admin/bookings" class="nav-btn">All Bookings</a>
             {% endif %}
-            <a href="/logout" class="nav-btn">Logout</a>
+            <a href="/logout" class="nav-btn" style="color:#f87171;">Logout</a>
         {% else %}
             <a href="/login" class="nav-btn">Login</a>
-            <a href="/signup" class="nav-btn">Signup</a>
+            <a href="/signup" class="nav-btn" style="background:var(--amber);color:var(--navy);border-radius:7px;font-weight:700;">Sign Up</a>
         {% endif %}
-        {% if session.get('is_admin') %}
-            <a href="/admin/bookings" class="nav-btn">Bookings (Admin)</a>
-        {% endif %}
-
-
     </div>
 </nav>
 

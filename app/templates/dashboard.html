@@ -3,9 +3,11 @@
 {% block content %}
 
 <header class="hero">
-    <h1>Welcome, {{ user.name }}</h1>
-    <p>Your booking dashboard</p>
-    <a href="/slots" class="cta-btn">Book a Slot</a>
+    <p style="font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:0.5rem;font-weight:600;">Welcome back</p>
+    <h1>{{ user.name }} 👋</h1>
+    <p>{{ user.email }}</p>
+    <a href="/slots" class="cta-btn" style="margin-top:1rem;">Browse &amp; Book Slots</a>
+    <a href="/my-bookings" class="cta-btn" style="margin-left:12px;margin-top:1rem;background:transparent;color:var(--amber);border:2px solid var(--amber);box-shadow:none;">My Bookings</a>
 </header>
 
 {% endblock %}

@@ -2,16 +2,19 @@
 
 {% block content %}
 
-<h2>Verify Your Email</h2>
+<section class="services" style="max-width:420px;">
+    <h2>Check Your Email</h2>
+    <p style="text-align:center;color:var(--text-muted);margin-bottom:2rem;font-size:0.9rem;">We sent a 6-digit code — enter it below to verify your account.</p>
 
-<form method="POST" action="/verify-otp">
-    <input type="text" name="otp" placeholder="Enter OTP" required>
-    <button type="submit">Verify</button>
-</form>
-
-<br>
-
-<a href="/resend-otp">Resend OTP</a>
-
+    <div class="card" style="padding:2.2rem;">
+        <form method="POST" action="/verify-otp">
+            <input type="text" name="otp" placeholder="Enter 6-digit OTP" required style="text-align:center;font-size:1.4rem;letter-spacing:8px;">
+            <button type="submit" style="width:100%;padding:13px;margin-top:0.5rem;">Verify Email</button>
+        </form>
+        <p style="text-align:center;margin-top:1.2rem;font-size:0.85rem;color:var(--text-muted);">
+            Didn't receive it? <a href="/resend-otp" style="color:var(--amber);text-decoration:none;font-weight:600;">Resend OTP</a>
+        </p>
+    </div>
+</section>
 
 {% endblock %}

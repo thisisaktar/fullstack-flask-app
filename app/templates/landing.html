@@ -3,32 +3,35 @@
 {% block content %}
 
 <header class="hero">
-    <h1>Book Slots Easily & Manage Everything in One Place</h1>
-    <p>A simple, secure booking system built with Flask.</p>
+    <h1>Book Slots Easily &amp;<br><span>Manage Everything</span> in One Place</h1>
+    <p>A simple, secure booking system — built for speed and clarity.</p>
 
     {% if not session.get('user_id') %}
-        <a href="/signup" class="cta-btn">Get Started</a>
-        <a href="/login" class="cta-btn" style="margin-left:10px;">Login</a>
+        <a href="/signup" class="cta-btn">Get Started Free</a>
+        <a href="/login" class="cta-btn" style="margin-left:12px; background:transparent; color:var(--amber); border:2px solid var(--amber); box-shadow:none;">Login</a>
     {% endif %}
 </header>
 
 <section class="services">
-    <h2>Features</h2>
+    <h2>Everything You Need</h2>
 
     <div class="cards">
         <div class="card">
+            <div style="font-size:2rem;margin-bottom:0.7rem;">🔐</div>
             <h3>Secure Login</h3>
-            <p>Session-based authentication with CSRF protection.</p>
+            <p>Session-based authentication with OTP verification and CSRF protection built in.</p>
         </div>
 
         <div class="card">
-            <h3>Slot Booking</h3>
-            <p>Book available slots instantly with safe database logic.</p>
+            <div style="font-size:2rem;margin-bottom:0.7rem;">📅</div>
+            <h3>Instant Booking</h3>
+            <p>Browse and book available slots in real-time with atomic database logic — no double bookings.</p>
         </div>
 
         <div class="card">
+            <div style="font-size:2rem;margin-bottom:0.7rem;">🛠️</div>
             <h3>Admin Control</h3>
-            <p>Manage slots and monitor bookings securely.</p>
+            <p>Create or remove slots, monitor all bookings, and manage users from a clean admin panel.</p>
         </div>
     </div>
 </section>

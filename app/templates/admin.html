@@ -5,62 +5,58 @@
 <section class="services">
     <h2>Admin Panel</h2>
 
+    <!-- Stats row -->
+    <div class="cards" style="margin-bottom: 2rem;">
+        <div class="card">
+            <p style="font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:0.4rem;">Total Users</p>
+            <p style="font-size:2.4rem;font-weight:900;color:var(--white);font-family:'Playfair Display',serif;">{{ total_users }}</p>
+        </div>
+        <div class="card">
+            <p style="font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:0.4rem;">Total Slots</p>
+            <p style="font-size:2.4rem;font-weight:900;color:var(--white);font-family:'Playfair Display',serif;">{{ total_slots }}</p>
+        </div>
+        <div class="card">
+            <p style="font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:0.4rem;">Total Bookings</p>
+            <p style="font-size:2.4rem;font-weight:900;color:var(--white);font-family:'Playfair Display',serif;">{{ total_bookings }}</p>
+        </div>
+        <div class="card">
+            <p style="font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:0.4rem;">Available Slots</p>
+            <p style="font-size:2.4rem;font-weight:900;color:var(--success);font-family:'Playfair Display',serif;">{{ available_slots }}</p>
+        </div>
+    </div>
+
     <!-- Add Slot -->
-     <div class="cards" style="margin-bottom: 30px;">
-
-    <div class="card">
-        <h3>Total Users</h3>
-        <p style="font-size:24px;">{{ total_users }}</p>
-    </div>
-
-    <div class="card">
-        <h3>Total Slots</h3>
-        <p style="font-size:24px;">{{ total_slots }}</p>
-    </div>
-
-    <div class="card">
-        <h3>Total Bookings</h3>
-        <p style="font-size:24px;">{{ total_bookings }}</p>
-    </div>
-
-    <div class="card">
-        <h3>Available Slots</h3>
-        <p style="font-size:24px;">{{ available_slots }}</p>
-    </div>
-
-</div>
-
-    <div class="card">
-        <h3>Add Slot</h3>
-
+    <div class="card" style="max-width:500px;margin:0 auto 2.5rem;text-align:left;">
+        <h3 style="margin-bottom:1.2rem;">➕ Add New Slot</h3>
         <form method="POST" action="/admin/add-slot">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="text" name="slot_time" placeholder="e.g. 10:00 - 10:30" required>
-            <button type="submit">Add Slot</button>
+            <input type="text" name="slot_time" placeholder="e.g. Mon 10:00 – 10:30" required>
+            <button type="submit" style="width:100%;padding:12px;">Add Slot</button>
         </form>
     </div>
 
     <!-- Slots List -->
+    <h2 style="margin-bottom:1.2rem;">All Slots</h2>
     <div class="cards">
         {% for slot in slots %}
         <div class="card">
+            <div style="font-size:1.4rem;margin-bottom:0.4rem;">🕐</div>
             <h3>{{ slot.slot_time }}</h3>
 
             {% if slot.is_booked %}
-                <p style="color:red;">Booked</p>
+                <p style="color:var(--danger);font-weight:600;margin-bottom:1rem;">Booked</p>
             {% else %}
-                <p style="color:green;">Available</p>
+                <p style="color:var(--success);font-weight:600;margin-bottom:1rem;">Available</p>
             {% endif %}
 
             <form method="POST" action="/admin/delete-slot">
                 <input type="hidden" name="slot_id" value="{{ slot.id }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button class="nav-btn" style="background:red;">Delete</button>
+                <button style="background:var(--danger);color:white;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;">Delete</button>
             </form>
         </div>
         {% endfor %}
     </div>
-
 </section>
 
 {% endblock %}
