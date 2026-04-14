@@ -1,4 +1,4 @@
-import smtplib
+
 from email.mime.text import MIMEText
 from functools import wraps
 from flask import session, redirect
@@ -7,31 +7,8 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 
-
-def send_otp_email(receiver_email, otp):
-    sender_email = os.getenv("MAIL_USER")
-    sender_password = os.getenv("MAIL_PASS")
-
-    subject = "Your OTP Verification Code"
-    body = f"Your OTP code is: {otp}\n\nIt expires in 5 minutes."
-
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = sender_email
-    msg['To'] = receiver_email
-
-    try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.send_message(msg)
-        server.quit()
-        print(f"OTP sent to {receiver_email}")
-    except Exception as e:
-        print(f"Failed to send OTP email: {e}")
-
-# def send_otp_email(email, otp):
-#     print(f"OTP for {email}: {otp}")
+def send_otp_email(email, otp):
+    print(f"OTP for {email}: {otp}")
 
 def get_db_connection():
     conn = psycopg2.connect(os.getenv("DATABASE_URL"))
