@@ -69,23 +69,36 @@ def signup():
 
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    # Check if user already exists
     cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
     existing_user = cursor.fetchone()
+
+    if existing_user:
+        cursor.close()
+        conn.close()
+        return {"success": False, "message": "Email already registered"}
+
+    # Generate OTP
+    import random
+    otp = str(random.randint(100000, 999999))
+
+    # Insert user WITH OTP (IMPORTANT)
+    cursor.execute("""
+        INSERT INTO users (name, email, password, otp, is_verified)
+        VALUES (%s, %s, %s, %s, FALSE)
+    """, (name, email, hashed_password, otp))
+
+    conn.commit()
+
     cursor.close()
     conn.close()
 
-    if existing_user:
-        return {"success": False, "message": "Email already registered"}
-
-    # Generate OTP and store signup info in session
-    otp = str(random.randint(100000, 999999))
-    session['signup_name'] = name
-    session['signup_email'] = email
-    session['signup_password'] = hashed_password
-    session['signup_otp'] = otp
-    session['signup_otp_expiry'] = (datetime.now() + timedelta(minutes=5)).isoformat()
-
+    # Print OTP instead of email (for now)
     send_otp_email(email, otp)
+
+    # Store email in session ONLY (not OTP)
+    session['verify_email'] = email
 
     return {"success": True, "redirect": "/verify-otp"}
 
@@ -98,37 +111,45 @@ def verify_otp_page():
 @auth_bp.route('/verify-otp', methods=['POST'])
 def verify_otp():
     entered_otp = request.form.get('otp')
-    stored_otp = session.get('signup_otp')
-    expiry_time = session.get('signup_otp_expiry')
 
-    if not stored_otp or not expiry_time:
+    email = session.get('verify_email')
+
+    if not email:
         return "Session expired. Please signup again. <a href='/signup'>Go back</a>", 403
 
-    if datetime.now() > datetime.fromisoformat(expiry_time):
-        session.pop('signup_otp', None)
-        session.pop('signup_otp_expiry', None)
-        return "OTP expired. Please signup again. <a href='/signup'>Go back</a>", 403
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-    if entered_otp != stored_otp:
+    # Get OTP from DB
+    cursor.execute("SELECT otp FROM users WHERE email = %s", (email,))
+    result = cursor.fetchone()
+
+    if not result:
+        cursor.close()
+        conn.close()
+        return "User not found", 404
+
+    db_otp = result['otp']
+
+    # Check OTP
+    if entered_otp != db_otp:
+        cursor.close()
+        conn.close()
         return "Invalid OTP. <a href='/verify-otp'>Try again</a>", 403
 
-    name = session.get('signup_name')
-    email = session.get('signup_email')
-    password = session.get('signup_password')
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO users (name, email, password, is_verified) VALUES (%s, %s, %s, TRUE)",
-        (name, email, password)
-    )
+    # Mark verified
+    cursor.execute("""
+        UPDATE users 
+        SET is_verified = TRUE, otp = NULL 
+        WHERE email = %s
+    """, (email,))
     conn.commit()
+
     cursor.close()
     conn.close()
 
-    # Clear signup session data
-    for key in ['signup_name', 'signup_email', 'signup_password', 'signup_otp', 'signup_otp_expiry']:
-        session.pop(key, None)
+    # Clear session
+    session.pop('verify_email', None)
 
     return redirect('/login')
 

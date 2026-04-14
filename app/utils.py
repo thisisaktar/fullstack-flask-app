@@ -7,6 +7,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 
+
 def send_otp_email(receiver_email, otp):
     sender_email = os.getenv("MAIL_USER")
     sender_password = os.getenv("MAIL_PASS")
